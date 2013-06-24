@@ -7,18 +7,18 @@
 -- =============================================
 CREATE FUNCTION [dbo].[MyListGetAt]
 (
-	@string varchar(100),
+	@string varchar(1000),
 	@position int,
 	@delimiters varchar(50) = ',',
 	@ignoreEmptySpaces bit	= 1
 )
-RETURNS varchar(100)
+RETURNS varchar(1000)
 AS
 BEGIN
 	
-	declare @str			varchar(100);
-	declare @sub			varchar(100);
-	declare @del			varchar(100);
+	declare @str			varchar(1000);
+	declare @sub			varchar(1000);
+	declare @del			varchar(1000);
 	declare @ignoreEmpty	bit;
 	declare @reverseOrd		bit;
 	declare @count			int;
@@ -45,7 +45,7 @@ BEGIN
 	if DATALENGTH(@del) > 1
 	begin
 		declare @d varchar(1);
-		declare @i int
+		declare @i int;
 
 		set @d = left(@del, 1);
 		set @i = 2;
@@ -77,8 +77,6 @@ BEGIN
 			continue;
 		end
 
-		set @sub = SUBSTRING(@str, @start, @len);
-
 		if @count = @retPos
 		begin
 			break;
@@ -86,8 +84,15 @@ BEGIN
 
 		set @start = @end + 1;
 
-		set @count = @count + 1
+		set @count = @count + 1;
 	end
+
+	if @start > DATALENGTH(@str) + 1
+	begin
+		RETURN '';
+	end
+
+	set @sub = SUBSTRING(@str, @start, @len);
 
 	RETURN (case when @reverseOrd = 1 then REVERSE(@sub) else @sub end);
 END

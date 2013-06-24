@@ -1,4 +1,7 @@
 sql_listgetat
 =============
 
-sql server listgetat function supports many usefull processes
+Sql Server ListGetAt function inspired from Javascript and Coldfusion.
+Thing you can do:
+Get substring at a position delimited by given char(s).
+Please inspect demo scripts.
